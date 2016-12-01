@@ -1,5 +1,30 @@
 var $gameBoard = $(".game-board");
 var moveVertical=0;
+var game = {
+  player1 : { score:0,name:"Yanny"},
+  player2 : { score:0,name:"Philippe"}
+}
+var currentPlayer = game.player1;
+var currentTime=0;
+
+//Constructor of Space Shuttle
+function Shuttle(){
+  
+}
+
+
+
+//Player controlling and taking command of the Space Shuttle
+function switchPlayer(){
+  // Checks which player is commanding the Shuttle
+  // Checks for the life of the current player
+  if(currentPlayer == game.player1 && currentPlayer.life==0){
+    currentPlayer=game.player2;
+  }else if(currentPlayer == game.player2 && currentPlayer.life==0){
+    currentPlayer=game.player1;
+  }
+}
+
 
 // Constructor of Rocks
 function Rock(name,size,points){
@@ -7,10 +32,8 @@ function Rock(name,size,points){
   this.size=size;
   this.points=points;
   //Starting position
-  this.posX = genRandomNum(-100,0);
-  this.posY = genRandomNum(-100,0);
-
-
+  this.posX = genRandomNum(0,0);
+  this.posY = genRandomNum(0,100);
   // Color Randomly selected
   this.color=genRandomColor();
   // Creates a div, ,
@@ -20,7 +43,7 @@ function Rock(name,size,points){
   // Assings a color
   this.node.css({
     background: this.color,
-    position: "relative"
+    //position: "relative"
   })
   // Appends to game board.
   $(".game-board").append(this.node);
@@ -34,11 +57,16 @@ function Rock(name,size,points){
 
 // Moves the rock from one place to another
 function moveRock(){
+  // Validates the position of each (div) rock to change value
+  if ($(this).offset().top > 500) {
+    $(this).css({
+      top:0
+    })
+  }
   // The vertical displacement of the rocks
-  moveVertical += 2;
-
+  moveVertical = 20;
   $(this).animate({
-    top: moveVertical,
+    top: '+=' + moveVertical,
     left: genRandomNum(20,480),
   },1000,moveRock)
   console.log("moveVertical: "+moveVertical);

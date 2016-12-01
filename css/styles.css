@@ -8,6 +8,7 @@
   animation-duration: 4000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+  position: absolute;
   /*display: inline-block;*/
 }
 /*Action of rotation of rocks*/
@@ -39,6 +40,8 @@
   width: 500px;
   height: 500px;
   margin-left: 20px;
+  overflow:hidden;
+  position:absolute;
 }
 
 .welcome-menu button{
