@@ -3,6 +3,21 @@
   width: 30px;
   height: 30px;
   background-color: red;
+  transform: rotate();
+  animation-name: spin;
+  animation-duration: 4000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  /*display: inline-block;*/
+}
+/*Action of rotation of rocks*/
+@keyframes spin {
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
 }
 
 .container{
