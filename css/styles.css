@@ -1,0 +1,32 @@
+
+.rock{
+  width: 30px;
+  height: 30px;
+  background-color: red;
+}
+
+.container{
+  background-color: lightgray;
+  width: 900px;
+  height: 600px;
+  text-align: center;
+}
+
+.welcome-menu{
+  position: relative;
+  margin: 50px;
+  padding: 20px;
+  background-color: green;
+}
+
+.game-board{
+  background-color: lightgreen;
+  width: 500px;
+  height: 500px;
+  margin-left: 20px;
+}
+
+.welcome-menu button{
+  margin: 30px;
+  height: 50px;
+}
