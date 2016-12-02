@@ -1,5 +1,7 @@
 var $gameBoard = $(".game-board");
+var $gameBoardH= $gameBoard.height();
 var moveVertical=0;
+
 var game = {
   player1 : { score:0,name:"Yanny"},
   player2 : { score:0,name:"Philippe"}
@@ -9,10 +11,30 @@ var currentTime=0;
 
 //Constructor of Space Shuttle
 function Shuttle(){
-  
+  var self = this;
+  this.speed = 25;
+  this.name = "Hercules";
+  this.lives= 5;
+  this.bullet ={speed:1,power:1}
+
+  this.node = $("<div>");
+  this.node.addClass("shuttle");
+  this.node.attr("id","my-shuttle");
+  $gameBoard.append(this.node);
+
+  // Adds event listener to the shuttle
+  $("body").on("keypress",function(evt){
+    if(evt.key == "a"){
+      self.node.css({
+        left: "-=" + self.speed
+      })
+    }else if(evt.key == "d"){
+      self.node.css({
+        left: "+=" + self.speed
+      })
+    }
+  });
 }
-
-
 
 //Player controlling and taking command of the Space Shuttle
 function switchPlayer(){
@@ -24,7 +46,6 @@ function switchPlayer(){
     currentPlayer=game.player1;
   }
 }
-
 
 // Constructor of Rocks
 function Rock(name,size,points){
@@ -43,10 +64,9 @@ function Rock(name,size,points){
   // Assings a color
   this.node.css({
     background: this.color,
-    //position: "relative"
   })
   // Appends to game board.
-  $(".game-board").append(this.node);
+  $gameBoard.append(this.node);
 
   //Creates the first animation
   this.node.animate({
@@ -58,7 +78,7 @@ function Rock(name,size,points){
 // Moves the rock from one place to another
 function moveRock(){
   // Validates the position of each (div) rock to change value
-  if ($(this).offset().top > 500) {
+  if ($(this).offset().top > $gameBoardH) {
     $(this).css({
       top:0
     })
@@ -72,8 +92,10 @@ function moveRock(){
   console.log("moveVertical: "+moveVertical);
 
   // validates when rocks are out of bound
-  (moveVertical == $gameBoard.height()) ? moveVertical=0 : null;
+  (moveVertical == $gameBoardH) ? moveVertical=0 : null;
 }
+
+new Shuttle();
 
 new Rock("Rocker",14,2);
 new Rock("Rocker",14,2);

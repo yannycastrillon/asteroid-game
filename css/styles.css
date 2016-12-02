@@ -1,4 +1,16 @@
 
+.shuttle{
+  width: 130px;
+  height: 130px;
+  background-color: purple;
+  position: absolute;
+  top: 320px;
+  left: 120px;
+  background-image: url("../img/shuttle.png");
+  background-size: contain;
+  transform: rotate(330deg);
+}
+
 .rock{
   width: 30px;
   height: 30px;
