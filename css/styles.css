@@ -1,3 +1,9 @@
+.bullet{
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background: red;
+}
 
 .shuttle{
   width: 130px;
@@ -21,6 +27,7 @@
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   position: absolute;
+
   /*display: inline-block;*/
 }
 /*Action of rotation of rocks*/

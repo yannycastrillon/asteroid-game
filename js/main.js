@@ -1,6 +1,5 @@
 var $gameBoard = $(".game-board");
 var $gameBoardH= $gameBoard.height();
-var moveVertical=0;
 
 var game = {
   player1 : { score:0,name:"Yanny"},
@@ -11,29 +10,67 @@ var currentTime=0;
 
 //Constructor of Space Shuttle
 function Shuttle(){
-  var self = this;
-  this.speed = 25;
-  this.name = "Hercules";
-  this.lives= 5;
-  this.bullet ={speed:1,power:1}
-
-  this.node = $("<div>");
-  this.node.addClass("shuttle");
-  this.node.attr("id","my-shuttle");
-  $gameBoard.append(this.node);
+  var shuttle = this;
+  shuttle.vx = 25;
+  shuttle.name = "Hercules";
+  shuttle.lives= 5;
+  // Creates the div of the space shuttle
+  shuttle.node = $("<div>");
+  shuttle.node.addClass("shuttle");
+  shuttle.node.attr("id","my-shuttle");
+  $gameBoard.append(shuttle.node);
 
   // Adds event listener to the shuttle
   $("body").on("keypress",function(evt){
     if(evt.key == "a"){
-      self.node.css({
-        left: "-=" + self.speed
-      })
+      shuttle.node.animate({
+        left: "-=" + shuttle.vx
+      },70)
     }else if(evt.key == "d"){
-      self.node.css({
-        left: "+=" + self.speed
-      })
+      shuttle.node.animate({
+        left: "+=" + shuttle.vx
+      },70)
+    }
+    if (evt.key == "f") {
+      // creates div and appends the bullet to the gameBoard
+      var bullet = new Bullet(shuttle)
+      $gameBoard.append(bullet.node);
+      console.log(bullet);
+
     }
   });
+
+}
+// Constructor of bullet
+function Bullet(shuttle){
+  var bullet = this;
+  bullet.x = shuttle.node.position().left + shuttle.node.width()/2;
+  bullet.y = shuttle.node.position().top;
+  bullet.vx = 0;
+  bullet.vy = 15;
+  bullet.power = 1;
+
+  bullet.node = $("<div>");
+  bullet.node.addClass("bullet");
+  bullet.node.css({
+    top:bullet.y,
+    left:bullet.x
+  })
+  bullet.node.animate({
+    top: "-=" + bullet.vy
+  },5,moveBulletY)
+
+  function moveBulletY(){
+    // validates if bullet is out of the top of the game board
+    if ($(bullet.node).offset().top < 0) {
+      bullet.node.remove();
+    }
+    // The vertical displacement of the bullet
+    $(bullet.node).animate({
+      top: '-=' + bullet.vy,
+      // left: genRandomNum(20,480),
+    },100,moveBulletY)
+  }
 }
 
 //Player controlling and taking command of the Space Shuttle
@@ -49,53 +86,45 @@ function switchPlayer(){
 
 // Constructor of Rocks
 function Rock(name,size,points){
-  this.name = name;
-  this.size=size;
-  this.points=points;
+  var rock = this;
+  rock.name = name;
+  rock.size=size;
+  rock.points=points;
+  rock.vy = 20;
   //Starting position
-  this.posX = genRandomNum(0,0);
-  this.posY = genRandomNum(0,100);
-  // Color Randomly selected
-  this.color=genRandomColor();
-  // Creates a div, ,
-  this.node = $('<div>');
-  // Class "rock"
-  this.node.addClass("rock");
-  // Assings a color
-  this.node.css({
-    background: this.color,
-  })
-  // Appends to game board.
-  $gameBoard.append(this.node);
+  rock.posX = genRandomNum(0,0);
+  rock.posY = genRandomNum(0,100);
+  rock.color=genRandomColor();
 
+  rock.node = $('<div>');
+  rock.node.addClass("rock");
+  rock.node.css({background: rock.color})
+  $gameBoard.append(rock.node);
+  
   //Creates the first animation
-  this.node.animate({
-    top:this.posY,
-    lef:this.posX
+  rock.node.animate({
+    top:rock.posY,
+    lef:rock.posX
   }, moveRock)
-}
 
-// Moves the rock from one place to another
-function moveRock(){
-  // Validates the position of each (div) rock to change value
-  if ($(this).offset().top > $gameBoardH) {
-    $(this).css({
-      top:0
-    })
+  // Moves the rock from one place to another
+  function moveRock(){
+    // Validates the position of each (div) rock to change value
+    if (rock.node.offset().top > $gameBoardH) {
+        rock.node.css({top:0})
+    }
+    rock.node.animate({
+      top: '+=' + rock.vy,
+      left: genRandomNum(20,480),
+    },1000,moveRock)
+    // validates when rocks are out of bound
+    if(rock.vy == $gameBoardH) {
+      rock.vy=0
+    }
   }
-  // The vertical displacement of the rocks
-  moveVertical = 20;
-  $(this).animate({
-    top: '+=' + moveVertical,
-    left: genRandomNum(20,480),
-  },1000,moveRock)
-  console.log("moveVertical: "+moveVertical);
-
-  // validates when rocks are out of bound
-  (moveVertical == $gameBoardH) ? moveVertical=0 : null;
 }
 
-new Shuttle();
+var myShuttle = new Shuttle();
 
 new Rock("Rocker",14,2);
 new Rock("Rocker",14,2);
@@ -107,11 +136,6 @@ new Rock("Rocker",14,2);
 new Rock("Rocker",14,2);
 new Rock("Rocker",14,2);
 new Rock("Rocker",14,2);
-
-
-
-
-
 
 
 // Get a random number between min and max
