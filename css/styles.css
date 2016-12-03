@@ -27,6 +27,7 @@
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   position: absolute;
+  left: 0;
 
   /*display: inline-block;*/
 }
