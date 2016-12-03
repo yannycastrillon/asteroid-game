@@ -1,6 +1,5 @@
 var $gameBoard = $(".game-board");
 var $gameBoardH= $gameBoard.height();
-
 var game = {
   player1 : { score:0,name:"Yanny"},
   player2 : { score:0,name:"Philippe"}
@@ -35,8 +34,6 @@ function Shuttle(){
       // creates div and appends the bullet to the gameBoard
       var bullet = new Bullet(shuttle)
       $gameBoard.append(bullet.node);
-      console.log(bullet);
-
     }
   });
 
@@ -65,10 +62,9 @@ function Bullet(shuttle){
     if ($(bullet.node).offset().top < 0) {
       bullet.node.remove();
     }
-    // The vertical displacement of the bullet
+    // The vertical movement of bullet
     $(bullet.node).animate({
-      top: '-=' + bullet.vy,
-      // left: genRandomNum(20,480),
+      top: '-=' + bullet.vy
     },100,moveBulletY)
   }
 }
@@ -100,7 +96,7 @@ function Rock(name,size,points){
   rock.node.addClass("rock");
   rock.node.css({background: rock.color})
   $gameBoard.append(rock.node);
-  
+
   //Creates the first animation
   rock.node.animate({
     top:rock.posY,
