@@ -8,7 +8,7 @@
 .shuttle{
   width: 130px;
   height: 130px;
-  background-color: purple;
+  /*background-color: purple;*/
   position: absolute;
   top: 320px;
   left: 120px;
@@ -56,7 +56,9 @@
 }
 
 .game-board{
-  background-color: lightgreen;
+  background-image: url("../img/background/space-stars.png");
+  background-size:contain;
+  background-repeat: round;
   width: 500px;
   height: 500px;
   margin-left: 20px;

@@ -2,23 +2,23 @@ var $gameBoard = $(".game-board");
 var $gameBoardH= $gameBoard.height();
 var currentPlayer=null;
 var currentTime=0;
-var arrRocks = [];
+
 function Game(){
   var game = this;
-  game.numRocks = 1;
+  game.numRocks = 20;
   game.myShuttle = new Shuttle();
   game.player1 = { score:0,name:"Yanny"};
   game.player2 = { score:0,name:"Philippe"};
-
   for (var i = 0; i < game.numRocks; i++) {
-    arrRocks.push(new Rock("Rocker",14,2));
+    new Rock("Rocker",14,2);
   }
+
 
 }
 
 function checkCollision($bullet) {
   var $rocks = $(".rock");
-  for (var i = 0; i < $rocks.length; i++){
+  if($rocks.lenght != 0){
     var x1 = $rocks.position().left;
     var y1 = $rocks.position().top;
     var h1 = $rocks.outerHeight(true);
@@ -32,20 +32,15 @@ function checkCollision($bullet) {
     var b2 = y2 + h2;
     var r2 = x2 + w2;
 
+    // validates bullet hits a rock.
     if (!(b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2)){
-      for (var j = 0; j < $rocks.length; j++) {
-        console.log("Es TRUE. Rocks");
-        console.log($rocks);
-        console.log($rocks[j]);
-        if($rocks[j].style.top == y1){
-          $($rocks[j]).remove();
-        }
-      }
       $bullet.remove();
+      $rocks.remove();
+      return true
     }
-    // returns a truthy or falsey value
-    return !(b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2);
   }
+    // returns a truthy or falsey value
+    return false;
 }
 
 //Constructor of Space Shuttle
@@ -100,7 +95,6 @@ function Bullet(shuttle){
   },5,moveBulletY)
 
   function moveBulletY(){
-    checkCollision(bullet.node);
     // validates if bullet is out of the top of the game board
     if ($(bullet.node).offset().top < 0) {
       bullet.node.remove();
@@ -109,7 +103,6 @@ function Bullet(shuttle){
     $(bullet.node).animate({
       top: '-=' + bullet.vy
     },100,moveBulletY)
-
   }
 }
 
@@ -149,7 +142,7 @@ function Rock(name,size,points){
 
   // Moves the rock from one place to another
   function moveRock(){
-
+    
     // Validates the position of each (div) rock to change value
     if (rock.node.offset().top > $gameBoardH) {
         rock.node.css({top:0})
@@ -162,7 +155,6 @@ function Rock(name,size,points){
     if(rock.vy == $gameBoardH) {
       rock.vy=0
     }
-    // checkCollision();
   }
 }
 new Game();
@@ -172,7 +164,6 @@ new Game();
 function genRandomNum(min,max){
   return Math.round((Math.random() * (max-min)) + min);
 }
-
 // Get a random color
 function genRandomColor(){
   var result = "#";
