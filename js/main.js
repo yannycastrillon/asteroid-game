@@ -2,7 +2,9 @@ var $gameBoard = $(".game-board");
 var $gameBoardH= $gameBoard.height();
 var currentPlayer=null;
 var currentTime=0;
+var $currentBullets=$("#bulletFired");
 
+// Constructor of the game.
 function Game(){
   var game = this;
   game.numRocks = 20;
@@ -12,10 +14,9 @@ function Game(){
   for (var i = 0; i < game.numRocks; i++) {
     new Rock("Rocker",14,2);
   }
-
-
 }
 
+// Checks collision
 function checkCollision($bullet) {
   var $rocks = $(".rock");
   if($rocks.lenght != 0){
@@ -36,7 +37,7 @@ function checkCollision($bullet) {
     if (!(b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2)){
       $bullet.remove();
       $rocks.remove();
-      return true
+      return true;
     }
   }
     // returns a truthy or falsey value
@@ -68,8 +69,9 @@ function Shuttle(){
     }
     if (evt.key == "f") {
       // creates div and appends the bullet to the gameBoard
-      var bullet = new Bullet(shuttle)
-
+      var bullet = new Bullet(shuttle);
+      console.log($currentBullets.text());
+      $currentBullets.text(parseInt($currentBullets.text())+1);
     }
   });
 
@@ -127,11 +129,13 @@ function Rock(name,size,points){
   //Starting position
   rock.posX = genRandomNum(0,10);
   rock.posY = genRandomNum(0,100);
-  rock.color=genRandomColor();
 
+  // console.log(rock.imgUrl);
   rock.node = $('<div>');
   rock.node.addClass("rock");
-  rock.node.css({background: rock.color})
+  rock.node.addClass("asteroid"+genRandomNum(1,6));
+  // rock.node.css("background-image", 'url('+rock.imgUrl+');');
+  // rock.node.css("background-size", 'cover;');
   $gameBoard.append(rock.node);
 
   //Creates the first animation
@@ -142,7 +146,6 @@ function Rock(name,size,points){
 
   // Moves the rock from one place to another
   function moveRock(){
-    
     // Validates the position of each (div) rock to change value
     if (rock.node.offset().top > $gameBoardH) {
         rock.node.css({top:0})
