@@ -1,46 +1,49 @@
 var $gameBoard = $(".game-board");
+var $currentBullets=$("#bulletFired");
 var $gameBoardH= $gameBoard.height();
 var currentPlayer=null;
 var currentTime=0;
+var idRock=0;
+var $rocks
 
+// Constructor Game
 function Game(){
   var game = this;
-  game.numRocks = 20;
+  game.numRocks = 10;
   game.myShuttle = new Shuttle();
   game.player1 = { score:0,name:"Yanny"};
   game.player2 = { score:0,name:"Philippe"};
+
   for (var i = 0; i < game.numRocks; i++) {
     new Rock("Rocker",14,2);
   }
-
-
+  $rocks = $(".rock");
 }
 
+// Checks collision between rocks and bullets
 function checkCollision($bullet) {
-  var $rocks = $(".rock");
-  if($rocks.lenght != 0){
-    var x1 = $rocks.position().left;
-    var y1 = $rocks.position().top;
-    var h1 = $rocks.outerHeight(true);
-    var w1 = $rocks.outerWidth(true);
-    var b1 = y1 + h1;
-    var r1 = x1 + w1;
-    var x2 = $bullet.position().left;
-    var y2 = $bullet.position().top;
-    var h2 = $bullet.outerHeight(true);
-    var w2 = $bullet.outerWidth(true);
-    var b2 = y2 + h2;
-    var r2 = x2 + w2;
+  $rocks.each(function(i,rock) {
+      var x1 = $(rock).offset().left;
+      var y1 = $(rock).offset().top;
+      var h1 = $(rock).outerHeight(true);
+      var w1 = $(rock).outerWidth(true);
+      var b1 = y1 + h1;
+      var r1 = x1 + w1;
+      var x2 = $bullet.offset().left;
+      var y2 = $bullet.offset().top;
+      var h2 = $bullet.outerHeight(true);
+      var w2 = $bullet.outerWidth(true);
+      var b2 = y2 + h2;
+      var r2 = x2 + w2;
 
-    // validates bullet hits a rock.
-    if (!(b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2)){
-      $bullet.remove();
-      $rocks.remove();
-      return true
-    }
-  }
-    // returns a truthy or falsey value
-    return false;
+      // validates bullet hits a rock.
+      if (!(b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2)){
+        console.log("Collition detected");
+        console.log($(rock).attr("id"));
+        $bullet.remove();
+        $(rock).remove()
+      }
+  })
 }
 
 //Constructor of Space Shuttle
@@ -95,6 +98,7 @@ function Bullet(shuttle){
   },5,moveBulletY)
 
   function moveBulletY(){
+    checkCollision($(bullet.node));
     // validates if bullet is out of the top of the game board
     if ($(bullet.node).offset().top < 0) {
       bullet.node.remove();
@@ -105,18 +109,6 @@ function Bullet(shuttle){
     },100,moveBulletY)
   }
 }
-
-//Player controlling and taking command of the Space Shuttle
-function switchPlayer(){
-  // Checks which player is commanding the Shuttle
-  // Checks for the life of the current player
-  if(currentPlayer == game.player1 && currentPlayer.life==0){
-    currentPlayer=game.player2;
-  }else if(currentPlayer == game.player2 && currentPlayer.life==0){
-    currentPlayer=game.player1;
-  }
-}
-
 // Constructor of Rocks
 function Rock(name,size,points){
   var rock = this;
@@ -131,7 +123,9 @@ function Rock(name,size,points){
 
   rock.node = $('<div>');
   rock.node.addClass("rock");
-  rock.node.css({background: rock.color})
+  rock.node.addClass("asteroid"+genRandomNum(1,6));
+  // rock.node.css("background-image", 'url('+rock.imgUrl+');');
+  // rock.node.css("background-size", 'cover;');
   $gameBoard.append(rock.node);
 
   //Creates the first animation
@@ -142,7 +136,6 @@ function Rock(name,size,points){
 
   // Moves the rock from one place to another
   function moveRock(){
-    
     // Validates the position of each (div) rock to change value
     if (rock.node.offset().top > $gameBoardH) {
         rock.node.css({top:0})
@@ -157,6 +150,8 @@ function Rock(name,size,points){
     }
   }
 }
+
+// Start and creation of game.
 new Game();
 
 
@@ -172,4 +167,14 @@ function genRandomColor(){
     result += options[genRandomNum(0,(options.length-1))]
   }
   return result;
+}
+//Player controlling and taking command of the Space Shuttle
+function switchPlayer(){
+  // Checks which player is commanding the Shuttle
+  // Checks for the life of the current player
+  if(currentPlayer == game.player1 && currentPlayer.life==0){
+    currentPlayer=game.player2;
+  }else if(currentPlayer == game.player2 && currentPlayer.life==0){
+    currentPlayer=game.player1;
+  }
 }
