@@ -6,7 +6,8 @@ var currentTime=0;
 var idRock=0;
 var $rocks
 
-// Constructor Game
+
+// Constructor of the game.
 function Game(){
   var game = this;
   game.numRocks = 10;
@@ -71,8 +72,9 @@ function Shuttle(){
     }
     if (evt.key == "f") {
       // creates div and appends the bullet to the gameBoard
-      var bullet = new Bullet(shuttle)
-
+      var bullet = new Bullet(shuttle);
+      console.log($currentBullets.text());
+      $currentBullets.text(parseInt($currentBullets.text())+1);
     }
   });
 
@@ -119,8 +121,8 @@ function Rock(name,size,points){
   //Starting position
   rock.posX = genRandomNum(0,10);
   rock.posY = genRandomNum(0,100);
-  rock.color=genRandomColor();
 
+  // console.log(rock.imgUrl);
   rock.node = $('<div>');
   rock.node.addClass("rock");
   rock.node.addClass("asteroid"+genRandomNum(1,6));
