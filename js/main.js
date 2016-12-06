@@ -19,7 +19,7 @@ var game = new Game();
 // Constructor of the game.
 function Game(){
   var game = this;
-  game.numRocks = 50;
+  game.numRocks = 100;
   game.myShuttle = new Shuttle();
   game.player1 = { name:"Yanny",score:0,age:27,profe:"Airforce"};
   game.player2 = { name:"Philippe",score:0,age:32,profe:"Marine"};
