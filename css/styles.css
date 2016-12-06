@@ -21,6 +21,10 @@ body{
   background-image: url("../img/asteroids/asteroid5.png");
   background-size: cover;
 }
+.asteroid6{
+  background-image: url("../img/asteroids/asteroid6.png");
+  background-size: cover;
+}
 .bullet{
   width: 10px;
   height: 10px;

@@ -39,7 +39,7 @@ function Game(){
 
 
   for (var i = 0; i < game.numRocks; i++) {
-    new Rock("Rocky "+i,genRandomNum(1,5),genRandomNum(20,100));
+    new Rock("Rocky "+i,genRandomNum(1,6),genRandomNum(20,100));
   }
   $rocks = $(".rock");
   setInterval(gameTimer,500);
