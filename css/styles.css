@@ -106,6 +106,9 @@
   padding: 15px;
   font-family: monospace;
 }
+.players-info{
+  margin: 3px;
+}
 
 .game-board{
   background: url("../img/background/space-stars.png");
@@ -118,7 +121,9 @@
   position:absolute;
   top: 125px;
 }
-
+.players-info p{
+  padding: 0px;
+}
 
 .welcome-menu button{
   margin: 30px;

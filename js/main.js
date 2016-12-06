@@ -1,22 +1,40 @@
 var $gameBoard = $(".game-board");
 var $currentBullets=$("#bulletFired");
 var $timer=$("#timer");
+var $scorePlayer1=$("#scorePlayer1");
+var $scorePlayer2=$("#scorePlayer2");
 var $gameBoardH= $gameBoard.height();
 var currentPlayer=null;
-var currentTime = 0;
-var bulletFired=false;
+var currentTime = 120;
 var idRock=0;
 var $rocks;
+var totalScore=0;
+
+// Start and creation of game.
+var game = new Game();
 
 
 // Constructor of the game.
 function Game(){
   var game = this;
-  game.numRocks = 5;
+  game.numRocks = 50;
   game.myShuttle = new Shuttle();
-  game.player1 = { score:0,name:"Yanny",age:27,profe:"Airforce"};
-  game.player2 = { score:0,name:"Philippe",age:32,profe:"Marine"};
+  game.player1 = { name:"Yanny",score:0,age:27,profe:"Airforce"};
+  game.player2 = { name:"Philippe",score:0,age:32,profe:"Marine"};
+
+  $("#namePlayer1").text(game.player1.name);
+  $("#namePlayer2").text(game.player2.name);
+
+  $("#agePlayer1").text(game.player1.age);
+  $("#agePlayer2").text(game.player2.age);
+
+  $("#proPlayer1").text(game.player1.profe);
+  $("#proPlayer2").text(game.player2.profe);
+
+
+
   currentPlayer = game.player2;
+
 
   for (var i = 0; i < game.numRocks; i++) {
     new Rock("Rocky "+i,genRandomNum(1,5),genRandomNum(20,100));
@@ -38,7 +56,6 @@ function Game(){
     else{clearInterval(2);}
     return currentTime;
   }
-
   //Player controlling and taking command of the Space Shuttle
   function switchPlayer(){
     // Checks which player is commanding the Shuttle
@@ -54,12 +71,22 @@ function Game(){
 
     console.log("currentPlayer: "+currentPlayer.name);
   }
-
-
 }
 
-
-
+// Tracks the score of the game
+function checkScore(rock){
+  console.log("Points of rock: "+rock.getAttribute("name")+" is: "+rock.getAttribute("points"));
+  if(currentPlayer == game.player1){
+    currentPlayer.score += parseInt(rock.getAttribute("points"));
+    $scorePlayer1.text(currentPlayer.score);
+  }else {
+    currentPlayer.score += parseInt(rock.getAttribute("points"));
+    $scorePlayer2.text(currentPlayer.score);
+  }
+  totalScore = parseInt($scorePlayer1.text()) + parseInt($scorePlayer2.text());
+  console.log("totalScore: "+totalScore);
+  $("#totalScore").text(totalScore);
+}
 
 //Constructor of Space Shuttle
 function Shuttle(){
@@ -111,20 +138,30 @@ function Bullet(shuttle){
     left:bullet.x
   })
   $gameBoard.append(bullet.node);
+
   bullet.node.animate({
     top: "-=" + bullet.vy
   },5,moveBulletY)
 
   function moveBulletY(){
-    checkCollision($(bullet.node));
+
     // validates if bullet is out of the top of the game board
-    if ($(bullet.node).offset().top < 0) {
+    if (bullet.node.offset().top < 0) {
       bullet.node.remove();
+      bullet.node = null
+      return false
+    } else {
+      if(bullet.node.length){
+        // The vertical movement of bullet
+        bullet.node.animate({
+          top: '-=' + bullet.vy
+        },100,function(){
+          console.log(bullet.node.length)
+          moveBulletY();
+          checkCollision(bullet.node);
+        })
+      }
     }
-    // The vertical movement of bullet
-    $(bullet.node).animate({
-      top: '-=' + bullet.vy
-    },100,moveBulletY)
   }
 }
 // Constructor of Rocks
@@ -161,7 +198,7 @@ function Rock(name,size,points){
     rock.node.animate({
       top: '+=' + rock.vy,
       left: genRandomNum(20,480),
-    },1000,moveRock)
+    },5000,moveRock)
     // validates when rocks are out of bound
     if(rock.vy == $gameBoardH) {
       rock.vy=0
@@ -169,13 +206,6 @@ function Rock(name,size,points){
   }
 }
 
-// Start and creation of game.
-new Game();
-
-// Tracks the score of the game
-function checkScore(){
-
-}
 // Get a random number between min and max
 function genRandomNum(min,max){
   return Math.round((Math.random() * (max-min)) + min);
@@ -191,8 +221,8 @@ function genRandomColor(){
 }
 // Checks collision between rocks and bullets
 function checkCollision($bullet) {
-  // If a shot was fired then calculate Collision
-  // if(bulletFired){
+  // If a bullet doesn't exit
+   if($bullet){
     $rocks.each(function(i,rock) {
       var x1 = $(rock).offset().left;
       var y1 = $(rock).offset().top;
@@ -211,12 +241,14 @@ function checkCollision($bullet) {
       if (!(b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2)){
         console.log("Collition detected");
         console.log($(rock).attr("id"));
-        checkScore();
+        checkScore(rock);
         $bullet.remove();
+        // bullet hits then set that bullet to null
+        $bullet = null;
         $(rock).remove();
+        // break checking for each rock when hits one
+        return false
       }
     })
-    // Bullet action of fired ended so sets to false
-    bulletFired = false;
-  // }
+   }
 }
