@@ -7,7 +7,7 @@ var $scorePlayer2=$("#scorePlayer2");
 var $nameRockDestroyed=$("#nameRock");
 var $gameBoardH= $gameBoard.height();
 var currentPlayer=null;
-var currentTime = 0;
+var currentTime = 120;
 var idRock=0;
 var $rocks;
 var totalScore=0;
