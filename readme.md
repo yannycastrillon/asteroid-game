@@ -54,5 +54,11 @@ https://github.com/yannycastrillon/asteroid-game
 - Actual ending of the game.
 - Refactor code DRY.
 
+##Trello planning
+![](https://raw.githubusercontent.com/yannycastrillon/asteroid-game/master/Trello-planning.png)
+
+##Branching each user story
+![](https://raw.githubusercontent.com/yannycastrillon/asteroid-game/master/Branches%20of%20the%20game.png)
+
 
 
