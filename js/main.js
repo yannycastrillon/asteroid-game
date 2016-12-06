@@ -3,9 +3,11 @@ var $currentBullets=$("#bulletFired");
 var $timer=$("#timer");
 var $scorePlayer1=$("#scorePlayer1");
 var $scorePlayer2=$("#scorePlayer2");
+
+var $nameRockDestroyed=$("#nameRock");
 var $gameBoardH= $gameBoard.height();
 var currentPlayer=null;
-var currentTime = 120;
+var currentTime = 0;
 var idRock=0;
 var $rocks;
 var totalScore=0;
@@ -197,7 +199,7 @@ function Rock(name,size,points){
     }
     rock.node.animate({
       top: '+=' + rock.vy,
-      left: genRandomNum(20,480),
+      left: genRandomNum(20,700),
     },5000,moveRock)
     // validates when rocks are out of bound
     if(rock.vy == $gameBoardH) {
@@ -246,6 +248,10 @@ function checkCollision($bullet) {
         // bullet hits then set that bullet to null
         $bullet = null;
         $(rock).remove();
+        $("#imgRock").removeClass();
+        // animates the destroyed rock
+        $("#imgRock").addClass("rock_img "+rock.classList[1]);
+        $nameRockDestroyed.text($(rock).attr("name"));
         // break checking for each rock when hits one
         return false
       }

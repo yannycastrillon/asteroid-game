@@ -1,3 +1,6 @@
+body{
+  color: white;
+}
 .asteroid1{
   background-image: url("../img/asteroids/asteroid1.png");
   background-size: cover;
@@ -77,7 +80,7 @@
 .shuttle-board{
   width: 750px;
   height: 100px;
-  background-color: Red;
+  background-color: #4A26AC;
   position: absolute;
   left:228px;
   top:25px;
@@ -91,14 +94,14 @@
 .rocks-board{
   width: 200px;
   height: 600px;
-  background-color: orange;
+  background-color: #000046;
   position: absolute;
   left:28px;
 }
 .players-board{
   width: 200px;
   height: 600px;
-  background-color: green;
+  background-color: #000046;
   position: absolute;
   left:978px;
 }
@@ -124,6 +127,42 @@
 .players-info p{
   padding: 0px;
 }
+
+.rock_img{
+  width: 150px;
+  height: 200px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 18px;
+
+  animation-name: spinner;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 25s;
+}
+.rocks-board p{
+  margin-bottom: 15px;
+}
+
+/* WebKit and Opera browsers */
+  @-webkit-keyframes spinner {
+    from { -webkit-transform: rotateY(0deg);    }
+    to   { -webkit-transform: rotateY(-360deg); }
+  }
+
+  /* all other browsers */
+  @keyframes spinner {
+    from {
+      -moz-transform: rotateY(0deg);
+      -ms-transform: rotateY(0deg);
+      transform: rotateY(0deg);
+    }
+    to {
+      -moz-transform: rotateY(-360deg);
+      -ms-transform: rotateY(-360deg);
+      transform: rotateY(-360deg);
+    }
+  }
 
 .welcome-menu button{
   margin: 30px;
