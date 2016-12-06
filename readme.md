@@ -5,6 +5,9 @@
 ## Briefing
 You and your best friend have fallen into a dark-hole who transported you to somewhere in the confines of the universe. You have one task and one task only, "SURVIVE" avoid the rocks and get back home!!!
 
+
+![](https://raw.githubusercontent.com/yannycastrillon/asteroid-game/master/Game-picture.png)
+
 ## Description 
 ####There are 4 boards on the screen which will give you information of what is happening in the game.
 
