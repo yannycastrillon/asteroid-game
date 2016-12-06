@@ -1,51 +1,65 @@
 var $gameBoard = $(".game-board");
 var $currentBullets=$("#bulletFired");
+var $timer=$("#timer");
 var $gameBoardH= $gameBoard.height();
 var currentPlayer=null;
-var currentTime=0;
+var currentTime = 0;
+var bulletFired=false;
 var idRock=0;
-var $rocks
+var $rocks;
 
 
 // Constructor of the game.
 function Game(){
   var game = this;
-  game.numRocks = 10;
+  game.numRocks = 5;
   game.myShuttle = new Shuttle();
-  game.player1 = { score:0,name:"Yanny"};
-  game.player2 = { score:0,name:"Philippe"};
+  game.player1 = { score:0,name:"Yanny",age:27,profe:"Airforce"};
+  game.player2 = { score:0,name:"Philippe",age:32,profe:"Marine"};
+  currentPlayer = game.player2;
 
   for (var i = 0; i < game.numRocks; i++) {
-    new Rock("Rocker",14,2);
+    new Rock("Rocky "+i,genRandomNum(1,5),genRandomNum(20,100));
   }
   $rocks = $(".rock");
-}
+  setInterval(gameTimer,500);
 
-// Checks collision between rocks and bullets
-function checkCollision($bullet) {
-  $rocks.each(function(i,rock) {
-      var x1 = $(rock).offset().left;
-      var y1 = $(rock).offset().top;
-      var h1 = $(rock).outerHeight(true);
-      var w1 = $(rock).outerWidth(true);
-      var b1 = y1 + h1;
-      var r1 = x1 + w1;
-      var x2 = $bullet.offset().left;
-      var y2 = $bullet.offset().top;
-      var h2 = $bullet.outerHeight(true);
-      var w2 = $bullet.outerWidth(true);
-      var b2 = y2 + h2;
-      var r2 = x2 + w2;
-
-      // validates bullet hits a rock.
-      if (!(b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2)){
-        console.log("Collition detected");
-        console.log($(rock).attr("id"));
-        $bullet.remove();
-        $(rock).remove()
+  // Tracks the game timer
+  function gameTimer(){
+    if(currentTime >= 0){
+      // Every 30sec players switch to control the shuttle
+      if (currentTime%30==0){
+        switchPlayer();
       }
-  })
+      // console.log("current Time: "+ currentTime);
+      $timer.text(currentTime);
+      currentTime--;
+    }
+    else{clearInterval(2);}
+    return currentTime;
+  }
+
+  //Player controlling and taking command of the Space Shuttle
+  function switchPlayer(){
+    // Checks which player is commanding the Shuttle
+    // Checks for the life of the current player
+    if(currentPlayer == game.player1){
+      currentPlayer=game.player2;
+      alert("Heyyy! "+game.player1.name+"!!! You amateur! Let me show you what a true emperor of the galaxy can do with this baby... Move aside, Punk!!!");
+    }else if(currentPlayer == game.player2){
+      currentPlayer=game.player1;
+      alert("Heyyy! "+game.player2.name+"!!! You amateur! Let me show you what a true emperor of the galaxy can do with this baby... Move aside, Punk!!!");
+    }
+    $("#currentPlayer").text(currentPlayer.name);
+
+    console.log("currentPlayer: "+currentPlayer.name);
+  }
+
+
 }
+
+
+
 
 //Constructor of Space Shuttle
 function Shuttle(){
@@ -71,6 +85,8 @@ function Shuttle(){
       },70)
     }
     if (evt.key == "f") {
+      // Indicates bullet was fired. Collition de
+      bulletFired = true;
       // creates div and appends the bullet to the gameBoard
       var bullet = new Bullet(shuttle);
       console.log($currentBullets.text());
@@ -122,12 +138,12 @@ function Rock(name,size,points){
   rock.posX = genRandomNum(0,10);
   rock.posY = genRandomNum(0,100);
 
-  // console.log(rock.imgUrl);
   rock.node = $('<div>');
   rock.node.addClass("rock");
+  rock.node.attr("name",rock.name);
+  rock.node.attr("size",rock.size);
+  rock.node.attr("points",rock.points);
   rock.node.addClass("asteroid"+genRandomNum(1,6));
-  // rock.node.css("background-image", 'url('+rock.imgUrl+');');
-  // rock.node.css("background-size", 'cover;');
   $gameBoard.append(rock.node);
 
   //Creates the first animation
@@ -156,7 +172,10 @@ function Rock(name,size,points){
 // Start and creation of game.
 new Game();
 
+// Tracks the score of the game
+function checkScore(){
 
+}
 // Get a random number between min and max
 function genRandomNum(min,max){
   return Math.round((Math.random() * (max-min)) + min);
@@ -170,13 +189,34 @@ function genRandomColor(){
   }
   return result;
 }
-//Player controlling and taking command of the Space Shuttle
-function switchPlayer(){
-  // Checks which player is commanding the Shuttle
-  // Checks for the life of the current player
-  if(currentPlayer == game.player1 && currentPlayer.life==0){
-    currentPlayer=game.player2;
-  }else if(currentPlayer == game.player2 && currentPlayer.life==0){
-    currentPlayer=game.player1;
-  }
+// Checks collision between rocks and bullets
+function checkCollision($bullet) {
+  // If a shot was fired then calculate Collision
+  // if(bulletFired){
+    $rocks.each(function(i,rock) {
+      var x1 = $(rock).offset().left;
+      var y1 = $(rock).offset().top;
+      var h1 = $(rock).outerHeight(true);
+      var w1 = $(rock).outerWidth(true);
+      var b1 = y1 + h1;
+      var r1 = x1 + w1;
+      var x2 = $bullet.offset().left;
+      var y2 = $bullet.offset().top;
+      var h2 = $bullet.outerHeight(true);
+      var w2 = $bullet.outerWidth(true);
+      var b2 = y2 + h2;
+      var r2 = x2 + w2;
+
+      // validates bullet hits a rock.
+      if (!(b1 < y2 || y1 > b2 || r1 < x2 || x1 > r2)){
+        console.log("Collition detected");
+        console.log($(rock).attr("id"));
+        checkScore();
+        $bullet.remove();
+        $(rock).remove();
+      }
+    })
+    // Bullet action of fired ended so sets to false
+    bulletFired = false;
+  // }
 }

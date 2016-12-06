@@ -42,7 +42,7 @@
   height: 30px;
   transform: rotate();
   animation-name: spin;
-  animation-duration: 4000ms;
+  animation-duration: 6000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   position: absolute;
@@ -81,8 +81,11 @@
   position: absolute;
   left:228px;
   top:25px;
-  float: left;
-  text-align: center;
+}
+
+.shuttle-board h2{
+  display: inline-block;
+  padding: 15px;
 }
 
 .rocks-board{
@@ -99,8 +102,13 @@
   position: absolute;
   left:978px;
 }
+.players-board span{
+  padding: 15px;
+  font-family: monospace;
+}
+
 .game-board{
-  background-image: url("../img/background/space-stars.png");
+  background: url("../img/background/space-stars.png");
   background-size:contain;
   background-repeat: round;
   width: 750px;
@@ -110,6 +118,7 @@
   position:absolute;
   top: 125px;
 }
+
 
 .welcome-menu button{
   margin: 30px;
