@@ -39,5 +39,20 @@ JQuery, JavaScript, Html, Css
 ##Repository
 https://github.com/yannycastrillon/asteroid-game
 
+##Problems
+- Managing collision detection regarding each rock and the bullet.
+- Managing performance and efficiency of the game when applying the animation of the bullet and the rocks.
+- Managing dependencies and responsibilities of each object (Bullet, Rock, Shuttle and Game) and the interaction of messages between them.
+- Organization of the code.
+
+##New Features to Accomplish
+- Create a welcome screen.
+- Sound effects for the bullet and the rocks.
+- Sound effect for the shuttle movement.
+- Actual description of rock and dialogs between players.
+- Shuttle damage calculation.
+- Actual ending of the game.
+- Refactor code DRY.
+
 
 
